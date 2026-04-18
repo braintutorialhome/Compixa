@@ -82,10 +82,19 @@
                 {currentView === 'admin' && user?.role === 'Admin' && <AdminPanel />}
                 {currentView === 'student' && user?.role === 'Student' && <StudentPanel user={user} />}
               </main>
-                <footer>
-  <p>Location : Bhangar, South 24 Parganas, Pin-743502</p>
-  <p>Contact: 9647046334 / 9093742601</p>
-  <p>Powered by: Unique Training Centre</p>
+                <footer style={{
+    backgroundColor: '#5346e2', 
+    color: '#ffffff', 
+    padding: '20px 10px', 
+    textAlign: 'center', 
+    width: '100%',
+    marginTop: 'auto'
+}}>
+    <p style={{ margin: '2px 0' }}>Location : Bhangar, South 24 Parganas, Pin-743502</p>
+    <p style={{ margin: '2px 0' }}>Contact: 9647046334 / 9093742601</p>
+    <p style={{ margin: '5px 0', fontWeight: 'bold', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '5px' }}>
+        Powered by: Unique Training Centre
+    </p>
 </footer>
             </div>
           );
