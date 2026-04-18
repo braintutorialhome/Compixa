@@ -4,39 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UTC Compixa - Learn with Excellence</title>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel (To compile JSX in the browser) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
-    
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        /** * CONFIGURATION 
-         * Replace GAS_URL with your deployed Google Apps Script Web App URL.
-         */
         const CONFIG = {
-          GAS_URL: "https://script.google.com/macros/s/AKfycbz61W74fsEn2fhAMQmTEaCETswVpZIBUXQoAepYezFUwXFz_7LIk85vtsNRmrEPg5E/exec", // Ekhane apnar Apps Script URL ti paste korun
+          GAS_URL: "https://script.google.com/macros/s/AKfycbz61W74fsEn2fhAMQmTEaCETswVpZIBUXQoAepYezFUwXFz_7LIk85vtsNRmrEPg5E/exec", // APNAR SCRIPT URL EKHANE DIN
           instituteName: "UTC Compixa",
           tagline: "Learn with Excellence",
           address: "Bhangar, West Bengal, Pin- 743502",
           phone: "9647046334"
         };
 
-        // --- Main App Component ---
         function App() {
           const [user, setUser] = useState(null);
           const [currentView, setCurrentView] = useState('home');
@@ -64,12 +51,8 @@
 
           return (
             <div className="min-h-screen flex flex-col relative">
-              {/* Header */}
               <header className="bg-indigo-600 text-white py-4 px-6 shadow-md flex justify-between items-center z-10 relative">
-                <div 
-                  className="flex items-center gap-3 cursor-pointer" 
-                  onClick={() => setCurrentView(user ? (user.role === 'Admin' ? 'admin' : 'student') : 'home')}
-                >
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentView(user ? (user.role === 'Admin' ? 'admin' : 'student') : 'home')}>
                   <div className="bg-white p-2 rounded-lg text-indigo-600 flex items-center justify-center w-10 h-10">
                     <i className="fa-solid fa-book-open text-xl"></i>
                   </div>
@@ -78,30 +61,20 @@
                     <p className="text-xs text-indigo-200">{CONFIG.tagline}</p>
                   </div>
                 </div>
-
                 {user ? (
                   <div className="flex items-center gap-4">
                     <span className="hidden md:inline text-sm font-medium">Hello, {user.name} ({user.role})</span>
-                    <button 
-                      onClick={handleLogout}
-                      className="flex items-center gap-2 bg-indigo-800 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm transition-colors"
-                    >
+                    <button onClick={handleLogout} className="flex items-center gap-2 bg-indigo-800 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm transition-colors">
                       <i className="fa-solid fa-right-from-bracket"></i> <span className="hidden sm:inline">Logout</span>
                     </button>
                   </div>
                 ) : (
                   <div className="flex gap-2">
-                     <button 
-                      onClick={() => setCurrentView('login')}
-                      className="bg-white text-indigo-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-50 transition-colors shadow-sm"
-                    >
-                      Login
-                    </button>
+                     <button onClick={() => setCurrentView('login')} className="bg-white text-indigo-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-50 transition-colors shadow-sm">Login</button>
                   </div>
                 )}
               </header>
 
-              {/* Main Content */}
               <main className="flex-grow flex flex-col relative overflow-hidden">
                 {currentView === 'home' && <HomeView setView={setCurrentView} />}
                 {currentView === 'login' && <LoginView setView={setCurrentView} onLogin={handleLoginSuccess} />}
@@ -109,45 +82,21 @@
                 {currentView === 'admin' && user?.role === 'Admin' && <AdminPanel />}
                 {currentView === 'student' && user?.role === 'Student' && <StudentPanel user={user} />}
               </main>
-
-              {/* Footer */}
-              <footer className="bg-slate-800 text-slate-400 py-6 px-6 text-center text-sm z-10 relative">
-                <p className="font-semibold text-slate-300">{CONFIG.instituteName} - {CONFIG.tagline}</p>
-                <p>{CONFIG.address} | Ph: {CONFIG.phone}</p>
-                <p className="mt-2 text-xs opacity-60">Powered by Google Workspace | Built for Excellence</p>
-              </footer>
             </div>
           );
         }
 
         // --- Views ---
-
         function HomeView({ setView }) {
           return (
             <div className="flex-grow flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-indigo-50 to-white overflow-y-auto">
               <div className="bg-white p-4 rounded-2xl shadow-xl inline-flex items-center justify-center w-24 h-24 mb-8">
                 <i className="fa-solid fa-book-open text-4xl text-indigo-600"></i>
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-                Welcome to <span className="text-indigo-600">{CONFIG.instituteName}</span>
-              </h2>
-              <p className="text-lg md:text-xl text-slate-600 max-w-2xl mb-10">
-                Empowering students with comprehensive tools, modern study materials, and seamless online learning experiences.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => setView('apply')}
-                  className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 hover:shadow-lg transition-all"
-                >
-                  <i className="fa-solid fa-file-circle-plus"></i> Apply for Admission
-                </button>
-                <button 
-                  onClick={() => setView('login')}
-                  className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-200 shadow-sm px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all"
-                >
-                  <i className="fa-solid fa-lock"></i> Portal Login
-                </button>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Welcome to <span className="text-indigo-600">{CONFIG.instituteName}</span></h2>
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                <button onClick={() => setView('apply')} className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 hover:shadow-lg transition-all"><i className="fa-solid fa-file-circle-plus"></i> Apply for Admission</button>
+                <button onClick={() => setView('login')} className="flex items-center justify-center gap-2 bg-white text-slate-700 border border-slate-200 shadow-sm px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all"><i className="fa-solid fa-lock"></i> Portal Login</button>
               </div>
             </div>
           );
@@ -164,14 +113,9 @@
             setLoading(true); setError('');
             try {
               const res = await apiCall('login', { id, password });
-              if (res.success) {
-                onLogin(res.data);
-              } else {
-                setError(res.error || "Login failed");
-              }
-            } catch (err) {
-              setError("Network error. Please try again.");
-            }
+              if (res.success) onLogin(res.data);
+              else setError(res.error || "Login failed");
+            } catch (err) { setError("Network error."); }
             setLoading(false);
           };
 
@@ -179,45 +123,17 @@
             <div className="flex-grow flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100">
                 <div className="text-center mb-8">
-                  <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i className="fa-solid fa-lock text-indigo-600 text-2xl"></i>
-                  </div>
+                  <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"><i className="fa-solid fa-lock text-indigo-600 text-2xl"></i></div>
                   <h2 className="text-2xl font-bold">Account Login</h2>
-                  <p className="text-slate-500 text-sm mt-1">Students & Admin secure access</p>
                 </div>
-
                 {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100">{error}</div>}
-
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">User ID</label>
-                    <input 
-                      type="text" required 
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                      placeholder="e.g., ADMIN1 or STU1234"
-                      value={id} onChange={e => setId(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                    <input 
-                      type="password" required 
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                      placeholder="••••••••"
-                      value={password} onChange={e => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <button 
-                    disabled={loading}
-                    className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-70 mt-2 flex justify-center items-center h-12"
-                  >
+                  <div><label className="block text-sm font-medium mb-1">User ID</label><input type="text" required className="w-full px-4 py-3 rounded-xl border" value={id} onChange={e => setId(e.target.value)} /></div>
+                  <div><label className="block text-sm font-medium mb-1">Password</label><input type="password" required className="w-full px-4 py-3 rounded-xl border" value={password} onChange={e => setPassword(e.target.value)} /></div>
+                  <button disabled={loading} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 mt-2 flex justify-center items-center h-12">
                     {loading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Secure Login'}
                   </button>
                 </form>
-
-                <div className="mt-6 text-center text-sm text-slate-500">
-                  Not enrolled yet? <button onClick={() => setView('apply')} className="text-indigo-600 font-semibold hover:underline">Apply Now</button>
-                </div>
               </div>
             </div>
           );
@@ -232,104 +148,59 @@
             setStatus('loading');
             try {
               const res = await apiCall('applyAdmission', formData);
-              if (res.success) setStatus('success');
-              else setStatus('error');
-            } catch (err) {
-              setStatus('error');
-            }
+              if (res.success) setStatus('success'); else setStatus('error');
+            } catch (err) { setStatus('error'); }
           };
 
-          if (status === 'success') {
-            return (
-              <div className="flex-grow flex items-center justify-center p-4">
-                <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500">
-                    <i className="fa-solid fa-circle-check text-4xl"></i>
-                  </div>
-                  <h2 className="text-2xl font-bold mb-2">Application Received!</h2>
-                  <p className="text-slate-600 mb-6">Your admission request is pending admin approval. You will receive an SMS/Call soon.</p>
-                  <button onClick={() => setView('home')} className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-6 rounded-xl w-full transition-colors">
-                    Return to Home
-                  </button>
-                </div>
-              </div>
-            );
-          }
+          if (status === 'success') return (
+            <div className="flex-grow flex items-center justify-center p-4"><div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center"><i className="fa-solid fa-circle-check text-4xl text-green-500 mb-4"></i><h2 className="text-2xl font-bold mb-2">Application Received!</h2><button onClick={() => setView('home')} className="bg-slate-100 font-bold py-3 px-6 rounded-xl w-full">Return to Home</button></div></div>
+          );
 
           return (
             <div className="flex-grow flex items-center justify-center p-4 overflow-y-auto">
-              <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold">Apply for Admission</h2>
-                  <button onClick={() => setView('home')} className="text-slate-400 hover:text-slate-600"><i className="fa-solid fa-xmark"></i></button>
-                </div>
-
+              <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md space-y-4">
+                <div className="flex justify-between items-center mb-6"><h2 className="text-2xl font-bold">Apply for Admission</h2><button type="button" onClick={() => setView('home')} className="text-slate-400"><i className="fa-solid fa-xmark"></i></button></div>
                 {status === 'error' && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4">Submission failed. Try again.</div>}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                    <input required type="text" className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-500"
-                      onChange={e => setFormData({...formData, name: e.target.value})} />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Applying for Class/Course</label>
-                    <input required type="text" className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-500"
-                      onChange={e => setFormData({...formData, className: e.target.value})} />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
-                    <input required type="tel" className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-500"
-                      onChange={e => setFormData({...formData, phone: e.target.value})} />
-                  </div>
-                  
-                  <button disabled={status === 'loading'} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 mt-4 flex justify-center items-center h-12">
-                    {status === 'loading' ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Submit Application'}
-                  </button>
-                </form>
-              </div>
+                <div><label className="block text-sm font-medium mb-1">Full Name</label><input required type="text" className="w-full px-4 py-3 rounded-xl border" onChange={e => setFormData({...formData, name: e.target.value})} /></div>
+                <div><label className="block text-sm font-medium mb-1">Applying for Class/Course</label><input required type="text" className="w-full px-4 py-3 rounded-xl border" onChange={e => setFormData({...formData, className: e.target.value})} /></div>
+                <div><label className="block text-sm font-medium mb-1">Phone Number</label><input required type="tel" className="w-full px-4 py-3 rounded-xl border" onChange={e => setFormData({...formData, phone: e.target.value})} /></div>
+                <button disabled={status === 'loading'} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl flex justify-center items-center h-12">
+                  {status === 'loading' ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Submit Application'}
+                </button>
+              </form>
             </div>
           );
         }
 
-        // --- Admin Panel ---
+        // --- ADMIN PANEL ---
         function AdminPanel() {
-          const [activeTab, setActiveTab] = useState('dashboard');
-          
+          const [activeTab, setActiveTab] = useState('fees');
           const tabs = [
-            { id: 'dashboard', icon: 'fa-border-all', label: 'Dashboard' },
             { id: 'students', icon: 'fa-users', label: 'Students' },
             { id: 'admissions', icon: 'fa-file-circle-plus', label: 'Admissions' },
-            { id: 'test', icon: 'fa-circle-play', label: 'Online Tests' },
+            { id: 'fees', icon: 'fa-file-invoice-dollar', label: 'Fees Collection' },
+            { id: 'test', icon: 'fa-circle-play', label: 'Manage Tests & Scores' },
             { id: 'materials', icon: 'fa-file-lines', label: 'Study Materials' },
           ];
 
           return (
             <div className="flex flex-col md:flex-row flex-grow h-full bg-slate-100 overflow-hidden absolute inset-0">
-              {/* Sidebar */}
               <div className="w-full md:w-64 bg-white border-r border-slate-200 overflow-y-auto flex-shrink-0">
                 <div className="p-4">
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-2">Admin Menu</p>
                   <nav className="space-y-1">
                     {tabs.map(tab => (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id ? 'bg-indigo-50 text-indigo-700 shadow-sm' : 'text-slate-600 hover:bg-slate-50'}`}
-                      >
-                        <i className={`fa-solid ${tab.icon} w-5 text-center ${activeTab === tab.id ? 'text-indigo-600' : 'text-slate-400'}`}></i>
-                        {tab.label}
+                      <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id ? 'bg-indigo-50 text-indigo-700 shadow-sm' : 'text-slate-600 hover:bg-slate-50'}`}>
+                        <i className={`fa-solid ${tab.icon} w-5 text-center ${activeTab === tab.id ? 'text-indigo-600' : 'text-slate-400'}`}></i>{tab.label}
                       </button>
                     ))}
                   </nav>
                 </div>
               </div>
-
-              {/* Main Content */}
               <div className="flex-grow overflow-y-auto p-6">
-                {activeTab === 'dashboard' && <AdminDashboard />}
                 {activeTab === 'students' && <AdminStudents />}
                 {activeTab === 'admissions' && <AdminAdmissions />}
+                {activeTab === 'fees' && <AdminFees />}
                 {activeTab === 'test' && <AdminTests />}
                 {activeTab === 'materials' && <AdminMaterials />}
               </div>
@@ -337,34 +208,236 @@
           );
         }
 
-        function AdminDashboard() {
-          const [stats, setStats] = useState({ students: 0, pendingAdmissions: 0 });
-          const [loading, setLoading] = useState(true);
-
+        function AdminStudents() {
+          const [students, setStudents] = useState([]);
           useEffect(() => {
-            apiCall('getDashboardStats', {}).then(res => {
-              if(res.success) setStats(res.data);
-              setLoading(false);
-            });
+            apiCall('getUsers', {}).then(res => { if(res.success) setStudents(res.data.filter(u => u.Role === 'Student' && u.Approved === 'Yes')); });
           }, []);
+          return (
+            <div>
+              <h2 className="text-2xl font-bold mb-6 text-slate-800">Enrolled Students</h2>
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-slate-50">
+                      <tr><th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">ID</th><th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Name</th><th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Status</th></tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200">
+                      {students.map((s, i) => (
+                        <tr key={i}><td className="px-6 py-4 text-sm font-medium text-slate-900">{s.ID}</td><td className="px-6 py-4 text-sm text-slate-700">{s.Name}</td><td className="px-6 py-4 text-sm"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">Active</span></td></tr>
+                      ))}
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          );
+        }
+
+        function AdminAdmissions() {
+          const [admissions, setAdmissions] = useState([]);
+          const fetchAds = () => { apiCall('getAdmissions', {}).then(res => { if(res.success) setAdmissions(res.data.filter(a => a.Status === 'Pending')); }); };
+          useEffect(() => { fetchAds(); }, []);
+          const handleApprove = async (rowId, name) => {
+            const res = await apiCall('approveAdmission', { rowId, name });
+            if(res.success) { alert(res.data.message); fetchAds(); }
+          };
+          return (
+            <div>
+              <h2 className="text-2xl font-bold mb-6 text-slate-800">Pending Admissions</h2>
+              <div className="bg-white rounded-2xl shadow-sm border overflow-hidden overflow-x-auto">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-slate-50"><tr><th className="px-6 py-4 text-left text-xs font-semibold uppercase">Name</th><th className="px-6 py-4 text-left text-xs font-semibold uppercase">Class</th><th className="px-6 py-4 text-left text-xs font-semibold uppercase">Phone</th><th className="px-6 py-4 text-left text-xs font-semibold uppercase">Action</th></tr></thead>
+                    <tbody className="divide-y divide-slate-200">
+                      {admissions.map((a, i) => (
+                        <tr key={i}><td className="px-6 py-4 text-sm font-medium">{a.Name}</td><td className="px-6 py-4 text-sm">{a.Class}</td><td className="px-6 py-4 text-sm">{a.Phone}</td>
+                          <td className="px-6 py-4 text-sm"><button onClick={() => handleApprove(a._rowIndex, a.Name)} className="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-indigo-700">Approve & Create ID</button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          );
+        }
+
+        // --- NEW FEES MODULE ---
+        function AdminFees() {
+          const [fees, setFees] = useState([]);
+          const [loading, setLoading] = useState(false);
+          const [form, setForm] = useState({studentId: '', name: '', month: '', amount: ''});
+
+          const fetchFees = () => {
+            apiCall('getFees', {}).then(res => { if(res.success) setFees(res.data.reverse()); }); // Reverse to show latest first
+          };
+          useEffect(() => { fetchFees(); }, []);
+
+          const handleSubmit = async (e) => {
+            e.preventDefault();
+            setLoading(true);
+            await apiCall('addFee', form);
+            setForm({studentId: '', name: '', month: '', amount: ''});
+            fetchFees();
+            setLoading(false);
+          };
 
           return (
-            <div className="max-w-4xl">
-              <h2 className="text-2xl font-bold mb-6 text-slate-800">Dashboard Overview</h2>
-              {loading ? <p className="text-slate-500">Loading stats...</p> : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div className="bg-indigo-100 p-4 rounded-xl text-indigo-600"><i className="fa-solid fa-users text-2xl"></i></div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1">
+                <h2 className="text-xl font-bold mb-4 text-slate-800">Collect Fee</h2>
+                <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                  <div><label className="text-xs font-bold text-slate-500 uppercase">Student ID</label><input required className="w-full p-3 rounded-xl border mt-1" value={form.studentId} onChange={e=>setForm({...form, studentId: e.target.value})} placeholder="e.g. STU1001"/></div>
+                  <div><label className="text-xs font-bold text-slate-500 uppercase">Student Name</label><input required className="w-full p-3 rounded-xl border mt-1" value={form.name} onChange={e=>setForm({...form, name: e.target.value})} placeholder="Name"/></div>
+                  <div><label className="text-xs font-bold text-slate-500 uppercase">Month/Purpose</label><input required className="w-full p-3 rounded-xl border mt-1" value={form.month} onChange={e=>setForm({...form, month: e.target.value})} placeholder="e.g. Jan 2024"/></div>
+                  <div><label className="text-xs font-bold text-slate-500 uppercase">Amount (₹)</label><input required type="number" className="w-full p-3 rounded-xl border mt-1" value={form.amount} onChange={e=>setForm({...form, amount: e.target.value})} placeholder="500"/></div>
+                  <button disabled={loading} className="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700">{loading ? 'Saving...' : 'Add Fee Record'}</button>
+                </form>
+              </div>
+              <div className="lg:col-span-2">
+                <h2 className="text-xl font-bold mb-4 text-slate-800">Recent Transactions</h2>
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-slate-50">
+                      <tr><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Date</th><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Student Info</th><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Month</th><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Amount</th></tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200">
+                      {fees.length === 0 && <tr><td colSpan="4" className="p-4 text-center text-slate-500">No records found.</td></tr>}
+                      {fees.map((f, i) => (
+                        <tr key={i} className="hover:bg-slate-50">
+                          <td className="px-4 py-3 text-sm text-slate-600">{f.Date}</td>
+                          <td className="px-4 py-3 text-sm font-medium"><div className="text-slate-900">{f.Name}</div><div className="text-xs text-slate-500">{f['Student ID']}</div></td>
+                          <td className="px-4 py-3 text-sm text-slate-700">{f.Month}</td>
+                          <td className="px-4 py-3 text-sm font-bold text-green-600">₹{f.Amount}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // --- UPDATED TEST & EXPORT MODULE ---
+        function AdminTests() {
+          const [questions, setQuestions] = useState([]);
+          const [scores, setScores] = useState([]);
+          const [externalTests, setExternalTests] = useState([]); // NEW STATE
+          const [view, setView] = useState('questions'); // questions, scores, external
+          const [extForm, setExtForm] = useState({title: '', link: '', targetClass: ''}); // NEW FORM STATE
+
+          const fetchData = () => {
+            apiCall('getQuestions', {}).then(res => { if(res.success) setQuestions(res.data); });
+            apiCall('getScores', {}).then(res => { if(res.success) setScores(res.data); });
+            apiCall('getExternalTests', {}).then(res => { if(res.success) setExternalTests(res.data); }); // FETCH EXTERNAL
+          };
+          useEffect(() => { fetchData(); }, []);
+
+          const handleApproveAll = async () => {
+            await apiCall('approveAllQuestions', {});
+            alert("All uploaded questions have been published to students.");
+            fetchData();
+          };
+
+          const exportToCSV = () => {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Date,Student ID,Name,Score,Total Questions\n";
+            scores.forEach(row => {
+              csvContent += `${row.Date},${row['Student ID']},${row.Name},${row.Score},${row['Total Questions']}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Student_Test_Scores.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          };
+
+          const handleAddExternal = async (e) => {
+            e.preventDefault();
+            await apiCall('addExternalTest', extForm);
+            setExtForm({title: '', link: '', targetClass: ''});
+            fetchData();
+          };
+
+          return (
+            <div>
+              <div className="flex flex-wrap gap-4 mb-6">
+                <button onClick={()=>setView('questions')} className={`px-6 py-2 rounded-lg font-bold ${view==='questions'?'bg-indigo-600 text-white':'bg-white text-slate-600 border'}`}>Manage Questions</button>
+                <button onClick={()=>setView('scores')} className={`px-6 py-2 rounded-lg font-bold ${view==='scores'?'bg-indigo-600 text-white':'bg-white text-slate-600 border'}`}>View Student Scores</button>
+                <button onClick={()=>setView('external')} className={`px-6 py-2 rounded-lg font-bold ${view==='external'?'bg-indigo-600 text-white':'bg-white text-slate-600 border'}`}>External HTML Tests</button>
+              </div>
+
+              {view === 'questions' ? (
+                <div>
+                  <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl mb-6 flex justify-between items-center">
                     <div>
-                      <p className="text-slate-500 text-sm font-medium">Active Students</p>
-                      <p className="text-3xl font-bold text-slate-800">{stats.students}</p>
+                      <h3 className="font-bold text-indigo-800">Question Bank (Synced from Google Sheet)</h3>
+                      <p className="text-sm text-indigo-600">Tip: Upload questions directly to your Google Sheet, then click Publish here.</p>
                     </div>
+                    <button onClick={handleApproveAll} className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 shadow-sm"><i className="fa-solid fa-bullhorn mr-2"></i> Publish All Tests</button>
                   </div>
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div className="bg-orange-100 p-4 rounded-xl text-orange-600"><i className="fa-solid fa-file-circle-plus text-2xl"></i></div>
-                    <div>
-                      <p className="text-slate-500 text-sm font-medium">Pending Admissions</p>
-                      <p className="text-3xl font-bold text-slate-800">{stats.pendingAdmissions}</p>
+                  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-y-auto max-h-[500px]">
+                    {questions.map((q, i) => (
+                      <div key={i} className="p-4 border-b border-slate-100 flex justify-between">
+                        <div>
+                          <p className="font-medium text-sm text-slate-800 mb-2">Q{i+1}: {q.Question}</p>
+                          <p className="text-xs text-slate-500">Ans: {q[`Option ${q['Correct Answer']}`]}</p>
+                        </div>
+                        <div>
+                          {q.Status === 'Approved' ? 
+                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold"><i className="fa-solid fa-check"></i> Published</span> :
+                            <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold">Draft</span>
+                          }
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : view === 'scores' ? (
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold text-slate-800">Test Results</h2>
+                    <button onClick={exportToCSV} className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-700"><i className="fa-solid fa-file-csv mr-2"></i> Export CSV / Excel</button>
+                  </div>
+                  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto">
+                    <table className="min-w-full divide-y divide-slate-200">
+                      <thead className="bg-slate-50">
+                        <tr><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Date</th><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Student Info</th><th className="px-4 py-3 text-left text-xs font-semibold text-slate-500">Score</th></tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200">
+                        {scores.map((s, i) => (
+                          <tr key={i} className="hover:bg-slate-50">
+                            <td className="px-4 py-3 text-sm text-slate-600">{s.Date}</td>
+                            <td className="px-4 py-3 text-sm"><div className="font-bold text-slate-900">{s.Name}</div><div className="text-xs text-slate-500">{s['Student ID']}</div></td>
+                            <td className="px-4 py-3 text-sm"><span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full font-bold">{s.Score} / {s['Total Questions']}</span></td>
+                          </tr>
+                        ))}
+                        {scores.length === 0 && <tr><td colSpan="3" className="p-6 text-center text-slate-500">No test results found yet.</td></tr>}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div>
+                    <h2 className="text-xl font-bold mb-4 text-slate-800">Add External HTML Test Link</h2>
+                    <form onSubmit={handleAddExternal} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                      <input required placeholder="Test Title (e.g. Chapter 1 Quiz)" className="w-full p-3 rounded-xl border" value={extForm.title} onChange={e=>setExtForm({...extForm, title: e.target.value})} />
+                      <input required placeholder="Target Class" className="w-full p-3 rounded-xl border" value={extForm.targetClass} onChange={e=>setExtForm({...extForm, targetClass: e.target.value})} />
+                      <input required placeholder="External HTML Link (URL)" type="url" className="w-full p-3 rounded-xl border" value={extForm.link} onChange={e=>setExtForm({...extForm, link: e.target.value})} />
+                      <button className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700">Publish Link</button>
+                    </form>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold mb-4 text-slate-800">Published External Tests</h2>
+                    <div className="space-y-3">
+                      {externalTests.map((t, i) => (
+                        <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center hover:bg-slate-50">
+                          <div><h3 className="font-bold text-slate-800">{t.Title}</h3><span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Class: {t.Class}</span></div>
+                          <a href={t.Link} target="_blank" rel="noreferrer" className="text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg font-bold">Open</a>
+                        </div>
+                      ))}
+                      {externalTests.length === 0 && <p className="text-slate-500 text-sm">No external tests published.</p>}
                     </div>
                   </div>
                 </div>
@@ -373,194 +446,22 @@
           );
         }
 
-        function AdminStudents() {
-          const [students, setStudents] = useState([]);
-          const [loading, setLoading] = useState(true);
-
-          useEffect(() => {
-            apiCall('getUsers', {}).then(res => {
-              if(res.success) {
-                setStudents(res.data.filter(u => u.Role === 'Student' && u.Approved === 'Yes'));
-              }
-              setLoading(false);
-            });
-          }, []);
-
-          return (
-            <div>
-              <h2 className="text-2xl font-bold mb-6 text-slate-800">Enrolled Students</h2>
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto">
-                {loading ? <div className="p-8 text-center text-slate-500">Loading...</div> : (
-                  <table className="min-w-full divide-y divide-slate-200">
-                    <thead className="bg-slate-50">
-                      <tr>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Student ID</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Name</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200">
-                      {students.map((s, i) => (
-                        <tr key={i} className="hover:bg-slate-50">
-                          <td className="px-6 py-4 text-sm font-medium text-slate-900">{s.ID}</td>
-                          <td className="px-6 py-4 text-sm text-slate-700">{s.Name}</td>
-                          <td className="px-6 py-4 text-sm"><span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">Active</span></td>
-                        </tr>
-                      ))}
-                      {students.length === 0 && <tr><td colSpan="3" className="p-6 text-center text-slate-500">No students found.</td></tr>}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </div>
-          );
-        }
-
-        function AdminAdmissions() {
-          const [admissions, setAdmissions] = useState([]);
-          const [loading, setLoading] = useState(true);
-
-          const fetchAds = () => {
-            setLoading(true);
-            apiCall('getAdmissions', {}).then(res => {
-              if(res.success) setAdmissions(res.data.filter(a => a.Status === 'Pending'));
-              setLoading(false);
-            });
-          };
-
-          useEffect(() => { fetchAds(); }, []);
-
-          const handleApprove = async (rowId, name) => {
-            const res = await apiCall('approveAdmission', { rowId, name });
-            if(res.success) {
-              alert(res.data.message);
-              fetchAds();
-            }
-          };
-
-          return (
-            <div>
-              <h2 className="text-2xl font-bold mb-6 text-slate-800">Pending Admissions</h2>
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto">
-                {loading ? <div className="p-8 text-center text-slate-500">Loading...</div> : (
-                  <table className="min-w-full divide-y divide-slate-200">
-                    <thead className="bg-slate-50">
-                      <tr>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Name</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Class</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Phone</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200">
-                      {admissions.map((a, i) => (
-                        <tr key={i}>
-                          <td className="px-6 py-4 text-sm font-medium text-slate-900">{a.Name}</td>
-                          <td className="px-6 py-4 text-sm text-slate-700">{a.Class}</td>
-                          <td className="px-6 py-4 text-sm text-slate-700">{a.Phone}</td>
-                          <td className="px-6 py-4 text-sm">
-                            <button onClick={() => handleApprove(a._rowIndex, a.Name)} className="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-indigo-700 transition-colors">
-                              Approve & Create ID
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                      {admissions.length === 0 && <tr><td colSpan="4" className="p-6 text-center text-slate-500">No pending admissions.</td></tr>}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </div>
-          );
-        }
-
-        function AdminTests() {
-          const [questions, setQuestions] = useState([]);
-          const [loading, setLoading] = useState(true);
-          const [form, setForm] = useState({question: '', optA: '', optB: '', optC: '', optD: '', correct: 'A'});
-
-          const fetchQs = () => {
-            setLoading(true);
-            apiCall('getQuestions', {}).then(res => {
-              if(res.success) setQuestions(res.data);
-              setLoading(false);
-            });
-          };
-
-          useEffect(() => { fetchQs(); }, []);
-
-          const handleAdd = async (e) => {
-            e.preventDefault();
-            await apiCall('addQuestion', form);
-            setForm({question: '', optA: '', optB: '', optC: '', optD: '', correct: 'A'});
-            fetchQs();
-          };
-
-          return (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div>
-                <h2 className="text-xl font-bold mb-4 text-slate-800">Add New Question</h2>
-                <form onSubmit={handleAdd} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                  <textarea required placeholder="Question text..." className="w-full p-3 rounded-xl border border-slate-200" rows="3" value={form.question} onChange={e=>setForm({...form, question: e.target.value})}></textarea>
-                  <input required placeholder="Option A" className="w-full p-3 rounded-xl border border-slate-200" value={form.optA} onChange={e=>setForm({...form, optA: e.target.value})} />
-                  <input required placeholder="Option B" className="w-full p-3 rounded-xl border border-slate-200" value={form.optB} onChange={e=>setForm({...form, optB: e.target.value})} />
-                  <input required placeholder="Option C" className="w-full p-3 rounded-xl border border-slate-200" value={form.optC} onChange={e=>setForm({...form, optC: e.target.value})} />
-                  <input required placeholder="Option D" className="w-full p-3 rounded-xl border border-slate-200" value={form.optD} onChange={e=>setForm({...form, optD: e.target.value})} />
-                  <div>
-                    <label className="block text-sm mb-1 text-slate-600">Correct Option</label>
-                    <select className="w-full p-3 rounded-xl border border-slate-200" value={form.correct} onChange={e=>setForm({...form, correct: e.target.value})}>
-                      <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
-                    </select>
-                  </div>
-                  <button className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">Save Question</button>
-                </form>
-              </div>
-              <div>
-                <h2 className="text-xl font-bold mb-4 text-slate-800">Question Bank</h2>
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden overflow-y-auto max-h-[500px]">
-                  {loading ? <div className="p-4">Loading...</div> : questions.map((q, i) => (
-                    <div key={i} className="p-4 border-b border-slate-100 hover:bg-slate-50">
-                      <p className="font-medium text-sm text-slate-800 mb-2">Q{i+1}: {q.Question}</p>
-                      <div className="grid grid-cols-2 gap-2 text-xs text-slate-600">
-                        <span className={q['Correct Answer'] === 'A' ? 'text-green-600 font-bold' : ''}>A: {q['Option A']}</span>
-                        <span className={q['Correct Answer'] === 'B' ? 'text-green-600 font-bold' : ''}>B: {q['Option B']}</span>
-                        <span className={q['Correct Answer'] === 'C' ? 'text-green-600 font-bold' : ''}>C: {q['Option C']}</span>
-                        <span className={q['Correct Answer'] === 'D' ? 'text-green-600 font-bold' : ''}>D: {q['Option D']}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        }
-
         function AdminMaterials() {
           const [materials, setMaterials] = useState([]);
           const [form, setForm] = useState({title: '', driveLink: '', targetClass: ''});
-
-          const fetchMats = () => {
-            apiCall('getMaterials', {}).then(res => {
-              if(res.success) setMaterials(res.data);
-            });
-          };
+          const fetchMats = () => { apiCall('getMaterials', {}).then(res => { if(res.success) setMaterials(res.data); }); };
           useEffect(() => { fetchMats(); }, []);
-
           const handleAdd = async (e) => {
-            e.preventDefault();
-            await apiCall('addMaterial', form);
-            setForm({title: '', driveLink: '', targetClass: ''});
-            fetchMats();
+            e.preventDefault(); await apiCall('addMaterial', form); setForm({title: '', driveLink: '', targetClass: ''}); fetchMats();
           };
-
           return (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h2 className="text-xl font-bold mb-4">Add Study Material</h2>
                 <form onSubmit={handleAdd} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                   <input required placeholder="Material Title" className="w-full p-3 rounded-xl border border-slate-200" value={form.title} onChange={e=>setForm({...form, title: e.target.value})} />
-                   <input required placeholder="Target Class / Course" className="w-full p-3 rounded-xl border border-slate-200" value={form.targetClass} onChange={e=>setForm({...form, targetClass: e.target.value})} />
-                   <input required placeholder="Google Drive View Link" className="w-full p-3 rounded-xl border border-slate-200" value={form.driveLink} onChange={e=>setForm({...form, driveLink: e.target.value})} />
+                   <input required placeholder="Material Title" className="w-full p-3 rounded-xl border" value={form.title} onChange={e=>setForm({...form, title: e.target.value})} />
+                   <input required placeholder="Target Class / Course" className="w-full p-3 rounded-xl border" value={form.targetClass} onChange={e=>setForm({...form, targetClass: e.target.value})} />
+                   <input required placeholder="Google Drive View Link" className="w-full p-3 rounded-xl border" value={form.driveLink} onChange={e=>setForm({...form, driveLink: e.target.value})} />
                    <button className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">Publish Link</button>
                 </form>
               </div>
@@ -568,11 +469,8 @@
                 <h2 className="text-xl font-bold mb-4">Published Materials</h2>
                  <div className="space-y-3">
                   {materials.map((m, i) => (
-                    <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center">
-                      <div>
-                        <h3 className="font-bold text-slate-800">{m.Title}</h3>
-                        <span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Class: {m.Class}</span>
-                      </div>
+                    <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center">
+                      <div><h3 className="font-bold text-slate-800">{m.Title}</h3><span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded">Class: {m.Class}</span></div>
                       <a href={m.DriveLink} target="_blank" rel="noreferrer" className="text-indigo-600 hover:bg-indigo-50 p-2 rounded-lg"><i className="fa-solid fa-download"></i></a>
                     </div>
                   ))}
@@ -582,10 +480,9 @@
           );
         }
 
-        // --- Student Panel ---
+        // --- STUDENT PANEL ---
         function StudentPanel({ user }) {
           const [activeTab, setActiveTab] = useState('dashboard');
-          
           const tabs = [
             { id: 'dashboard', icon: 'fa-border-all', label: 'My Dashboard' },
             { id: 'test', icon: 'fa-circle-play', label: 'Take Online Test' },
@@ -594,144 +491,142 @@
 
           return (
             <div className="flex flex-col md:flex-row flex-grow h-full bg-slate-50 overflow-hidden absolute inset-0">
-              {/* Sidebar */}
               <div className="w-full md:w-64 bg-white border-r border-slate-200 overflow-y-auto flex-shrink-0">
                 <div className="p-4">
-                   <div className="bg-indigo-50 rounded-xl p-4 mb-6 border border-indigo-100">
-                     <div className="w-12 h-12 bg-indigo-200 rounded-full flex items-center justify-center text-indigo-700 font-bold text-lg mb-2">
-                       {user.name.charAt(0)}
-                     </div>
+                   <div className="bg-indigo-50 rounded-xl p-4 mb-6 border border-indigo-100 text-center">
+                     <div className="w-16 h-16 bg-indigo-200 rounded-full flex items-center justify-center text-indigo-700 font-bold text-2xl mx-auto mb-2">{user.name.charAt(0)}</div>
                      <p className="font-bold text-slate-800">{user.name}</p>
                      <p className="text-xs text-slate-500">ID: {user.id}</p>
                    </div>
                   <nav className="space-y-1">
                     {tabs.map(tab => (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'}`}
-                      >
-                        <i className={`fa-solid ${tab.icon} w-5 text-center`}></i>
-                        {tab.label}
+                      <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'}`}>
+                        <i className={`fa-solid ${tab.icon} w-5 text-center`}></i>{tab.label}
                       </button>
                     ))}
                   </nav>
                 </div>
               </div>
-
-              {/* Main Content */}
               <div className="flex-grow overflow-y-auto p-6 bg-slate-50">
                 {activeTab === 'dashboard' && (
                   <div className="max-w-4xl">
                      <h2 className="text-2xl font-bold mb-6 text-slate-800">Welcome back, {user.name.split(' ')[0]}!</h2>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
-                          <h3 className="font-bold text-lg mb-2">Quick Tip</h3>
-                          <p className="text-indigo-100 text-sm">New study materials have been uploaded for your batch. Check them out to stay ahead!</p>
-                          <button onClick={()=>setActiveTab('materials')} className="mt-4 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition-colors">View Materials</button>
-                        </div>
                         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                          <h3 className="font-bold text-lg mb-2 text-slate-800">Upcoming Test</h3>
-                          <p className="text-slate-500 text-sm mb-4">Practice your skills with our automated MCQ tests.</p>
-                          <button onClick={()=>setActiveTab('test')} className="text-indigo-600 font-semibold text-sm flex items-center gap-1 hover:underline">
-                            Start Practice <i className="fa-solid fa-chevron-right text-xs"></i>
-                          </button>
+                          <h3 className="font-bold text-lg mb-2 text-slate-800">Online Practice Test</h3>
+                          <p className="text-slate-500 text-sm mb-4">Take tests published by admin and check your scores immediately.</p>
+                          <button onClick={()=>setActiveTab('test')} className="text-indigo-600 font-bold text-sm flex items-center gap-1 hover:underline">Start Practice <i className="fa-solid fa-chevron-right text-xs"></i></button>
                         </div>
                      </div>
                   </div>
                 )}
-                {activeTab === 'test' && <StudentTest />}
+                {activeTab === 'test' && <StudentTest user={user} />}
                 {activeTab === 'materials' && <StudentMaterials />}
               </div>
             </div>
           );
         }
 
-        function StudentTest() {
+        // --- UPDATED STUDENT TEST MODULE ---
+        function StudentTest({ user }) {
           const [questions, setQuestions] = useState([]);
+          const [externalTests, setExternalTests] = useState([]); // NEW STATE
           const [currentQ, setCurrentQ] = useState(0);
           const [answers, setAnswers] = useState({});
           const [submitted, setSubmitted] = useState(false);
           const [score, setScore] = useState(0);
+          const [mode, setMode] = useState('menu'); // NEW: 'menu' or 'mcq'
 
           useEffect(() => {
             apiCall('getQuestions', {}).then(res => {
-              if(res.success && res.data.length > 0) setQuestions(res.data);
+              if(res.success && res.data.length > 0) {
+                // Shudhumatro approved question gulo dekhabe
+                const approvedQs = res.data.filter(q => q.Status === 'Approved');
+                setQuestions(approvedQs);
+              }
+            });
+            apiCall('getExternalTests', {}).then(res => { // FETCH EXTERNAL TESTS
+              if(res.success) setExternalTests(res.data);
             });
           }, []);
 
-          const handleSelect = (opt) => {
-            setAnswers({...answers, [currentQ]: opt});
-          };
-
-          const handleNext = () => {
-            if (currentQ < questions.length - 1) setCurrentQ(currentQ + 1);
-          };
-
-          const handleSubmit = () => {
+          const handleSubmit = async () => {
             let s = 0;
-            questions.forEach((q, i) => {
-              if(answers[i] === q['Correct Answer']) s++;
-            });
+            questions.forEach((q, i) => { if(answers[i] === q['Correct Answer']) s++; });
             setScore(s);
             setSubmitted(true);
+            // Save to Backend Sheet
+            await apiCall('submitTest', { studentId: user.id, name: user.name, score: s, total: questions.length });
           };
 
-          if (questions.length === 0) return <div className="p-8 text-center text-slate-500 bg-white rounded-2xl border border-slate-200">No tests available right now.</div>;
+          // MENU UI FOR STUDENT
+          if (mode === 'menu') {
+            return (
+              <div className="max-w-4xl space-y-8">
+                <div>
+                  <h2 className="text-2xl font-bold mb-4 text-slate-800">External HTML Tests</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {externalTests.length === 0 ? <p className="text-slate-500 text-sm bg-white p-4 rounded-xl border">No external tests available at the moment.</p> : null}
+                    {externalTests.map((t, i) => (
+                      <div key={i} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex justify-between items-center hover:shadow-md transition-all">
+                        <div>
+                          <h3 className="font-bold text-slate-800">{t.Title}</h3>
+                          <p className="text-xs text-slate-500 mt-1">Class: {t.Class}</p>
+                        </div>
+                        <a href={t.Link} target="_blank" rel="noreferrer" className="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg font-bold hover:bg-indigo-100 transition-colors">Start Test</a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-bold mb-4 text-slate-800">Built-in Practice Test</h2>
+                  <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 text-center max-w-md">
+                    <p className="text-slate-600 mb-6">Practice your skills with our automated MCQ test. Your score will be saved automatically.</p>
+                    <button onClick={() => setMode('mcq')} disabled={questions.length === 0} className="w-full bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold disabled:opacity-50 hover:bg-indigo-700 transition-colors">
+                      {questions.length === 0 ? 'No Questions Published Yet' : 'Start Built-in Test'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          if (questions.length === 0) return <div className="p-8 text-center text-slate-500 bg-white rounded-2xl border border-slate-200">No tests published by admin yet.</div>;
 
           if (submitted) {
             return (
               <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center">
-                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                   <span className="text-3xl font-bold text-green-600">{score}/{questions.length}</span>
-                </div>
+                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"><span className="text-3xl font-bold text-green-600">{score}/{questions.length}</span></div>
                 <h2 className="text-2xl font-bold mb-2">Test Completed!</h2>
-                <p className="text-slate-600 mb-6">Your responses have been recorded automatically.</p>
-                <button onClick={() => {setSubmitted(false); setCurrentQ(0); setAnswers({});}} className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium">Retake Test</button>
+                <p className="text-slate-600 mb-6">Your score has been saved in the system automatically.</p>
+                <button onClick={() => {setSubmitted(false); setCurrentQ(0); setAnswers({}); setMode('menu');}} className="text-indigo-600 font-bold hover:underline">Return to Test Menu</button>
               </div>
             );
           }
 
           const q = questions[currentQ];
-
           return (
             <div className="max-w-3xl mx-auto">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-slate-800">Online Practice Test</h2>
+                <button onClick={() => setMode('menu')} className="text-slate-500 hover:text-slate-800 font-medium"><i className="fa-solid fa-arrow-left mr-2"></i> Back to Menu</button>
                 <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold">Question {currentQ + 1} of {questions.length}</span>
               </div>
-              
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
                 <h3 className="text-lg font-medium text-slate-800 mb-6">{currentQ + 1}. {q.Question}</h3>
-                
                 <div className="space-y-3">
                   {['A', 'B', 'C', 'D'].map(opt => (
-                    <button 
-                      key={opt}
-                      onClick={() => handleSelect(opt)}
-                      className={`w-full text-left p-4 rounded-xl border-2 transition-all flex justify-between items-center ${answers[currentQ] === opt ? 'border-indigo-600 bg-indigo-50' : 'border-slate-100 hover:border-slate-300'}`}
-                    >
+                    <button key={opt} onClick={() => setAnswers({...answers, [currentQ]: opt})} className={`w-full text-left p-4 rounded-xl border-2 transition-all flex justify-between items-center ${answers[currentQ] === opt ? 'border-indigo-600 bg-indigo-50' : 'border-slate-100 hover:border-slate-300'}`}>
                       <span><span className="font-bold mr-2 text-slate-400">{opt}.</span> {q[`Option ${opt}`]}</span>
                       {answers[currentQ] === opt && <i className="fa-solid fa-circle-check text-indigo-600 text-xl"></i>}
                     </button>
                   ))}
                 </div>
-
                 <div className="mt-8 flex justify-end">
                   {currentQ < questions.length - 1 ? (
-                    <button 
-                      onClick={handleNext} disabled={!answers[currentQ]}
-                      className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50"
-                    >
-                      Next Question
-                    </button>
+                    <button onClick={() => setCurrentQ(currentQ + 1)} disabled={!answers[currentQ]} className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50">Next Question</button>
                   ) : (
-                    <button 
-                      onClick={handleSubmit} disabled={!answers[currentQ]}
-                      className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50"
-                    >
-                      Submit Test
-                    </button>
+                    <button onClick={handleSubmit} disabled={!answers[currentQ]} className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50">Submit Test</button>
                   )}
                 </div>
               </div>
@@ -741,28 +636,16 @@
 
         function StudentMaterials() {
           const [materials, setMaterials] = useState([]);
-          
-          useEffect(() => {
-            apiCall('getMaterials', {}).then(res => {
-              if(res.success) setMaterials(res.data);
-            });
-          }, []);
-
+          useEffect(() => { apiCall('getMaterials', {}).then(res => { if(res.success) setMaterials(res.data); }); }, []);
           return (
             <div className="max-w-4xl">
               <h2 className="text-2xl font-bold mb-6 text-slate-800">Study Materials</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {materials.length === 0 ? <p className="text-slate-500 col-span-3">No materials uploaded yet.</p> : null}
                 {materials.map((m, i) => (
-                  <div key={i} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow group">
-                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
-                      <i className="fa-solid fa-file-lines text-2xl"></i>
-                    </div>
-                    <h3 className="font-bold text-slate-800 mb-1">{m.Title}</h3>
-                    <p className="text-xs text-slate-500 mb-4">Class: {m.Class}</p>
-                    <a href={m.DriveLink} target="_blank" rel="noreferrer" className="block w-full text-center bg-slate-50 hover:bg-indigo-50 text-indigo-600 font-medium py-2 rounded-lg transition-colors border border-slate-100">
-                      Open Material
-                    </a>
+                  <div key={i} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4"><i className="fa-solid fa-file-lines text-2xl"></i></div>
+                    <h3 className="font-bold text-slate-800 mb-1">{m.Title}</h3><p className="text-xs text-slate-500 mb-4">Class: {m.Class}</p>
+                    <a href={m.DriveLink} target="_blank" rel="noreferrer" className="block w-full text-center bg-slate-50 hover:bg-indigo-50 text-indigo-600 font-medium py-2 rounded-lg border border-slate-100">Open</a>
                   </div>
                 ))}
               </div>
@@ -770,45 +653,31 @@
           );
         }
 
-        // --- API Service ---
+        // --- API & MOCK DATA ---
         async function apiCall(action, payload) {
           if (CONFIG.GAS_URL && CONFIG.GAS_URL.startsWith('http')) {
             try {
-              const res = await fetch(CONFIG.GAS_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action, payload })
-              });
+              const res = await fetch(CONFIG.GAS_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, payload }) });
               return await res.json();
-            } catch (error) {
-              console.error("API Error:", error);
-              return { success: false, error: "Server connection failed." };
-            }
+            } catch (error) { return { success: false, error: "Server connection failed." }; }
           } else {
-            // Mock mode if no URL is provided
-            return new Promise(resolve => {
-              setTimeout(() => {
-                resolve(mockBackend(action, payload));
-              }, 600);
-            });
+            return new Promise(resolve => setTimeout(() => resolve(mockBackend(action, payload)), 600));
           }
         }
 
-        // Mock DB for offline testing
         const MOCK_DB = {
           users: [
             { ID: 'ADMIN1', Name: 'Super Admin', Password: 'admin', Role: 'Admin', Approved: 'Yes' },
             { ID: 'STU1001', Name: 'John Doe', Password: 'password123', Role: 'Student', Approved: 'Yes' },
           ],
-          admissions: [
-            { _rowIndex: 0, Name: 'Alice Smith', Class: 'Class 10', Phone: '9876543210', Status: 'Pending' }
-          ],
+          admissions: [],
           questions: [
-            { Question: 'What does HTML stand for?', 'Option A': 'Hyper Text Markup Language', 'Option B': 'Hot Mail', 'Option C': 'How to Make Lasagna', 'Option D': 'None', 'Correct Answer': 'A' }
+            { Question: 'What does HTML stand for?', 'Option A': 'Hyper Text Markup Language', 'Option B': 'Hot Mail', 'Option C': 'How to Make Lasagna', 'Option D': 'None', 'Correct Answer': 'A', Status: 'Draft' }
           ],
-          materials: [
-            { Title: 'Chapter 1: Web Basics', Class: 'Class 10', DriveLink: '#' }
-          ]
+          materials: [],
+          fees: [{ Date: '18/04/2026', 'Student ID': 'STU1001', Name: 'John Doe', Month: 'Jan 2024', Amount: 500 }],
+          scores: [{ Date: '18/04/2026', 'Student ID': 'STU1001', Name: 'John Doe', Score: 5, 'Total Questions': 10 }],
+          externalTests: [{ Title: "Chapter 1 HTML Demo Exam", Link: "https://example.com", Class: "Class 10" }] // NEW MOCK DATA
         };
 
         function mockBackend(action, payload) {
@@ -816,20 +685,33 @@
             case 'login':
               const user = MOCK_DB.users.find(u => u.ID === payload.id && u.Password === payload.password);
               if (user) return { success: true, data: { id: user.ID, name: user.Name, role: user.Role } };
-              return { success: false, error: "Invalid credentials (Use ADMIN1/admin)" };
-            case 'applyAdmission': return { success: true, data: { message: "Success" } };
-            case 'getDashboardStats': return { success: true, data: { students: 1, pendingAdmissions: 1 }};
+              return { success: false, error: "Invalid credentials (Use ADMIN1/admin or STU1001/password123)" };
             case 'getUsers': return { success: true, data: MOCK_DB.users };
             case 'getAdmissions': return { success: true, data: MOCK_DB.admissions };
+            case 'getFees': return { success: true, data: MOCK_DB.fees };
+            case 'addFee': 
+              MOCK_DB.fees.push({ Date: new Date().toLocaleDateString(), 'Student ID': payload.studentId, Name: payload.name, Month: payload.month, Amount: payload.amount });
+              return { success: true, data: {} };
             case 'getQuestions': return { success: true, data: MOCK_DB.questions };
-            case 'addQuestion': return { success: true, data: {} };
+            case 'approveAllQuestions': 
+              MOCK_DB.questions.forEach(q => q.Status = 'Approved');
+              return { success: true, data: {} };
+            case 'getScores': return { success: true, data: MOCK_DB.scores };
+            case 'submitTest':
+              MOCK_DB.scores.push({ Date: new Date().toLocaleDateString(), 'Student ID': payload.studentId, Name: payload.name, Score: payload.score, 'Total Questions': payload.total });
+              return { success: true, data: {} };
             case 'getMaterials': return { success: true, data: MOCK_DB.materials };
-            case 'addMaterial': return { success: true, data: {} };
-            default: return { success: false, error: "Mock action not found" };
+            
+            // NEW MOCK HANDLERS FOR EXTERNAL TESTS
+            case 'getExternalTests': return { success: true, data: MOCK_DB.externalTests };
+            case 'addExternalTest':
+              MOCK_DB.externalTests.push({ Title: payload.title, Link: payload.link, Class: payload.targetClass });
+              return { success: true, data: {} };
+
+            default: return { success: true, data: {} };
           }
         }
 
-        // --- Render App ---
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
